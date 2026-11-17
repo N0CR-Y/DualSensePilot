@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+build/
+dist/
+installer_out/
+*.spec
+assets/app.ico
+.claude/
+*.lnk
+*.spec
