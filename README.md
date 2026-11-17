@@ -142,3 +142,7 @@ Günlük dosyası: `%APPDATA%\DualSensePilot\dsstudio.log`
 ## Kaynaklar
 
 Linux `hid-playstation` sürücüsü, pydualsense, DS4Windows, Nielk1 TriggerEffectGenerator (MIT), Nefarius ViGEmBus / HidHide, vgamepad.
+
+## Lisans
+
+Bu proje [MIT Lisansı](LICENSE) ile yayınlanmıştır. Adaptif tetik efekt üreteci Nielk1'in MIT lisanslı TriggerEffectGenerator çalışmasının Python portudur. ViGEmBus ve HidHide (Nefarius) kendi lisanslarıyla, ayrı programlar olarak kurulur. Arayüz PySide6 (LGPL) ile yapılmıştır.
