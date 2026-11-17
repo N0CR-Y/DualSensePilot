@@ -1,6 +1,58 @@
 # DualSensePilot
 
 PS5 DualSense kolunu Windows'ta özelleştirmek için DualSenseX / DSX benzeri, açık kaynak bir masaüstü uygulaması.
+*(EN: open-source Windows app to customize the PS5 DualSense — adaptive triggers, lightbar, rumble, Xbox 360 / DS4 emulation, profiles. UI is Turkish.)*
+
+![Durum sayfası](docs/screenshots/durum.png)
+
+## İndir ve kur
+
+1. [**Releases**](../../releases/latest) sayfasından `DualSensePilot_Setup.exe` dosyasını indir.
+2. Çalıştır. Sihirbaz sana **kurulum klasörünü seçtirir** (varsayılan `C:\Program Files\DualSensePilot`) ve sürücüler için yönetici izni ister.
+3. Kurulum bitince uygulamayı başlat, kolu USB ile tak ya da Bluetooth ile eşleştir. Hepsi bu.
+
+> Windows "Bilinmeyen yayıncı / SmartScreen" uyarısı gösterebilir: kurulum dosyası dijital olarak **imzalı değil** (kod imzalama sertifikası ücretli). Kaynak kodun tamamı bu depoda; aşağıdaki "Kurmadan önce incele" bölümünden neyi kurduğunu doğrulayabilirsin.
+
+## Kurmadan önce incele
+
+Kurulum bir şey yapmadan önce neyin yüklendiğini ve neden yönetici izni istediğini bilmek isteyebilirsin:
+
+| Soru | Cevap |
+|---|---|
+| **Ne yüklenir?** | Uygulamanın kendisi ([PyInstaller](https://pyinstaller.org) ile paketlenmiş bu depodaki kod) + eksikse iki açık kaynak sürücü: **ViGEmBus** ve **HidHide** (aşağıya bak). |
+| **Neden yönetici izni (UAC)?** | Yalnızca sürücü kurmak için. Sürücüler kernel seviyesinde çalışır, Windows bunu yönetici izni olmadan yapmaz. |
+| **İnternet kullanır mı?** | **Hayır.** Kodda ağ bağlantısı yok (`import requests/urllib/socket` yok), telemetri yok, güncelleme denetimi yok. |
+| **Ne okur/yazar?** | Kolla USB/Bluetooth HID üzerinden konuşur. Ayarlarını `%APPDATA%\DualSensePilot` altına yazar. Başka bir yere dokunmaz. |
+| **Başka program çalıştırır mı?** | Yalnızca Windows'un `tasklist` komutunu (çalışan exe adlarını listelemek için, profil eklerken) ve — sen "Kolu gizle" düğmesine basarsan — HidHide'ın komut satırı aracını (yönetici izniyle). Oyuna özel profil için ön plandaki pencerenin exe **adına** bakar; hiçbir yere göndermez. |
+| **Kaldırma** | Ayarlar → Uygulamalar → DualSensePilot. Sürücüler ayrı programlardır, istersen onları da oradan kaldırabilirsin. |
+
+**Sürücüler (üçüncü taraf, açık kaynak):**
+
+- [ViGEmBus](https://github.com/nefarius/ViGEmBus) (Nefarius) — oyunlara sanal Xbox 360 / DS4 kolu gösterir. Emülasyon için gerekli.
+- [HidHide](https://github.com/nefarius/HidHide) (Nefarius) — gerçek kolu oyunlardan gizleyip çift girişi önler.
+
+İkisinin kurulum dosyaları `tools/` klasöründe; ikisi de **Nefarius Software Solutions e.U. tarafından dijital olarak imzalı** (dosyaya sağ tık → Özellikler → Dijital İmzalar'dan doğrulayabilirsin). Bilgisayarında zaten kuruluysa yeniden kurulmaz. SHA-256:
+
+```
+F4BBBCB82E6258641B887C74BC81C4C5F66E4AA811808DFC304347687B7605F6  HidHide_1.5.230_x64.exe
+89220A7865076B342892F98865F3499FB7C4CFD673159E89D352C360FD014C6A  ViGEmBus_1.22.0_x64_x86_arm64.exe
+```
+
+**Kurulum dosyasını doğrula:** indirdikten sonra PowerShell'de
+
+```powershell
+Get-FileHash .\DualSensePilot_Setup.exe -Algorithm SHA256
+```
+
+çıktısı release sayfasındaki SHA-256 ile aynı olmalı.
+
+**Kendin derle (tercih edersen hiç hazır exe kullanma):** [Tek EXE üretmek](#tek-exe-üretmek) bölümüne bak; depoyu klonlayıp `kur.bat` ve `build.bat` çalıştırman yeterli.
+
+## Ekran görüntüleri
+
+| Adaptif tetikler | Işık ve LED | Emülasyon |
+|---|---|---|
+| ![](docs/screenshots/adaptif-tetikler.png) | ![](docs/screenshots/isik-led.png) | ![](docs/screenshots/emulasyon.png) |
 
 ## Neler yapar?
 
@@ -17,7 +69,7 @@ PS5 DualSense kolunu Windows'ta özelleştirmek için DualSenseX / DSX benzeri, 
 
 USB ve Bluetooth bağlantılarının ikisi de desteklenir (Bluetooth'ta CRC'li tam rapor modu kullanılır).
 
-## Kurulum
+## Kaynaktan çalıştırma (geliştiriciler)
 
 ### 1. Uygulama
 
